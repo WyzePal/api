@@ -1,39 +1,37 @@
-This repository contains the modified source code for python-zulip-api cloned from https://github.com/zulip/python-zulip-api
+# Zulip API
 
-# WyzePal API
+![Build status](https://travis-ci.org/zulip/python-zulip-api.svg?branch=master)
+[![Coverage status](https://img.shields.io/codecov/c/github/zulip/python-zulip-api/master.svg)](
+https://codecov.io/gh/zulip/python-zulip-api)
 
-![Build status](https://travis-ci.org/wyzepal/python-wyzepal-api.svg?branch=master)
-[![Coverage status](https://img.shields.io/codecov/c/github/wyzepal/python-wyzepal-api/master.svg)](
-https://codecov.io/gh/wyzepal/python-wyzepal-api)
+This repository contains the source code for Zulip's PyPI packages:
 
-This repository contains the source code for WyzePal's PyPI packages:
-
-* `wyzepal`: [PyPI package](https://pypi.python.org/pypi/wyzepal/)
-  for WyzePal's API bindings.
-* `wyzepal_bots`: [PyPI package](https://pypi.python.org/pypi/wyzepal-bots)
-  for WyzePal's bots and bots API.
-* `wyzepal_botserver`: [PyPI package](https://pypi.python.org/pypi/wyzepal-botserver)
-  for WyzePal's Flask Botserver.
+* `zulip`: [PyPI package](https://pypi.python.org/pypi/zulip/)
+  for Zulip's API bindings.
+* `zulip_bots`: [PyPI package](https://pypi.python.org/pypi/zulip-bots)
+  for Zulip's bots and bots API.
+* `zulip_botserver`: [PyPI package](https://pypi.python.org/pypi/zulip-botserver)
+  for Zulip's Flask Botserver.
 
 The source code is written in *Python 3*.
 
-## Development
+## Development from Original Repo.
 
 1. Fork and clone the Git repo:
-   `git clone https://github.com/<your_username>/python-wyzepal-api.git`
+   `git clone https://github.com/<your_username>/python-zulip-api.git`
 
 2. Make sure you have [pip](https://pip.pypa.io/en/stable/installing/)
    and [virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
    installed.
 
 3. `cd` into the repository cloned earlier:
-   `cd python-wyzepal-api`
+   `cd python-zulip-api`
 
 4. Run:
    ```
    python3 ./tools/provision
    ```
-   This sets up a virtual Python environment in `wyzepal-api-py<your_python_version>-venv`,
+   This sets up a virtual Python environment in `zulip-api-py<your_python_version>-venv`,
    where `<your_python_version>` is your default version of Python. If you would like to specify
    a different Python version, run
    ```
@@ -42,19 +40,74 @@ The source code is written in *Python 3*.
 
 5. If that succeeds, it will print end with printing the following command:
    ```
-   source /.../python-wyzepal-api/.../activate
+   source /.../python-zulip-api/.../activate
    ```
    You can run run this command to enter the virtual environment.
-   You'll want to run this in each new shell before running commands from `python-wyzepal-api`.
+   You'll want to run this in each new shell before running commands from `python-zulip-api`.
 
 6. Once you've entered the virtualenv, you should see something like this on the terminal:
    ```
-   (wyzepal-api-py3-venv) user@pc ~/python-wyzepal-api $
+   (zulip-api-py3-venv) user@pc ~/python-zulip-api $
    ```
    You should now be able to run any commands/tests/etc. in this
    virtual environment.
 
-### Running tests
+## Development from This Repo.
+
+1. Fork and clone the Git repo:
+   `git clone https://github.com/<your_username>/api.git`
+
+2. Make sure you have [pip](https://pip.pypa.io/en/stable/installing/)
+   and [virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
+   installed.
+
+3. `cd` into the repository cloned earlier:
+   `cd api`
+
+4. Run:
+   ```
+   python3 ./tools/provision
+   ```
+   This sets up a virtual Python environment in `api<your_python_version>-venv`,
+   where `<your_python_version>` is your default version of Python. If you would like to specify
+   a different Python version, run
+   ```
+   python3 ./tools/provision -p <path_to_your_python_version>
+   ```
+
+5. If that succeeds, it will print end with printing the following command:
+   ```
+   source /.../api/.../activate
+   ```
+   You can run run this command to enter the virtual environment.
+   You'll want to run this in each new shell before running commands from `api`.
+
+6. Once you've entered the virtualenv, you should see something like this on the terminal:
+   ```
+   (zulip-api-py3-venv) user@pc ~/api $
+   ```
+   You should now be able to run any commands/tests/etc. in this
+   virtual environment.
+
+### Running tests from original repo.
+
+To run the tests for
+
+* *zulip*: run `./tools/test-zulip`
+
+* *zulip_bots*: run `./tools/test-bots`
+
+* *zulip_botserver*: run `./tools/test-botserver`
+
+To run the linter, type:
+
+`./tools/lint`
+
+To check the type annotations, run:
+
+`./tools/run-mypy`
+
+### Running from this repo.
 
 To run the tests for
 
