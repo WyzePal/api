@@ -14,7 +14,7 @@ import pytest
 def parse_args():
     description = """
 Script to run test_<bot_name>.py files in the
-zulip_bot/zulip_bots/bots/<bot_name> directories.
+wyzepal_bot/wyzepal_bots/bots/<bot_name> directories.
 
 Running all tests:
 
@@ -66,7 +66,7 @@ def main():
     TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
     os.chdir(os.path.dirname(TOOLS_DIR))
     sys.path.insert(0, TOOLS_DIR)
-    bots_dir = os.path.join(TOOLS_DIR, '..', 'zulip_bots/zulip_bots/bots')
+    bots_dir = os.path.join(TOOLS_DIR, '..', 'wyzepal_bots/wyzepal_bots/bots')
     glob_pattern = bots_dir + '/*/test_*.py'
     test_modules = glob.glob(glob_pattern)
 
@@ -109,7 +109,7 @@ def main():
         # Codecov seems to work only when using loader.discover. It failed to
         # capture line executions for functions like loader.loadTestFromModule
         # or loader.loadTestFromNames.
-        top_level = "zulip_bots/zulip_bots/bots/"
+        top_level = "wyzepal_bots/wyzepal_bots/bots/"
         loader = unittest.defaultTestLoader
         test_suites = []
         for name in bots_to_test:

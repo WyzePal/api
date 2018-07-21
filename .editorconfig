@@ -1,6 +1,6 @@
-# This file was copied from the zulip/zulip repository
+# This file was copied from the wyzepal/wyzepal repository
 # - not all file types are present here, but this ensures
-#   future files will be consistent with those in zulip/zulip
+#   future files will be consistent with those in wyzepal/wyzepal
 
 root = true
 

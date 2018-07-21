@@ -34,14 +34,14 @@ htmlcov/
 .pydevproject
 
 # Ignore virtualenvs created by ./tools/provision
-zulip-api-py*-venv
+wyzepal-api-py*-venv
 
-# Automatically generated MANIFEST.in in zulip_bots
-zulip_bots/MANIFEST.in
+# Automatically generated MANIFEST.in in wyzepal_bots
+wyzepal_bots/MANIFEST.in
 
 # Bot configuration files
-zuliprc
-.zuliprc
+wyzepalrc
+.wyzepalrc
 botserverrc
 .botserverrc
 

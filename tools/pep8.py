@@ -1,5 +1,5 @@
-# This file has been copied and modified from the Zulip server repository
-# Original path: zulip/tools/linter_lib/pep8.py
+# This file has been copied and modified from the WyzePal server repository
+# Original path: wyzepal/tools/linter_lib/pep8.py
 
 from __future__ import print_function
 from __future__ import absolute_import
@@ -60,7 +60,7 @@ def check_pep8(files):
         'E266',
 
         # "expected 2 blank lines after class or function definition"
-        # Zulip only uses 1 blank line after class/function
+        # WyzePal only uses 1 blank line after class/function
         # definitions; the PEP-8 recommendation results in super sparse code.
         'E302', 'E305',
 
@@ -70,7 +70,7 @@ def check_pep8(files):
         'E402',
 
         # "line too long"
-        # Zulip is a bit less strict about line length, and has its
+        # WyzePal is a bit less strict about line length, and has its
         # own check for this (see max_length)
         'E501',
 

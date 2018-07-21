@@ -26,7 +26,7 @@ def pack(options: argparse.Namespace) -> None:
         print('tools/deploy: Path to bot folder not specified.')
         sys.exit(1)
     if not options.config:
-        print('tools/deploy: Path to zuliprc not specified.')
+        print('tools/deploy: Path to wyzepalrc not specified.')
         sys.exit(1)
     if not options.main:
         print('tools/deploy: No main bot file specified.')
@@ -52,13 +52,13 @@ def pack(options: argparse.Namespace) -> None:
         for file in files:
             file_path = os.path.join(root, file)
             zip_file.write(file_path, os.path.relpath(file_path, options.path))
-    # Pack the zuliprc
-    zip_file.write(options.config, 'zuliprc')
+    # Pack the wyzepalrc
+    zip_file.write(options.config, 'wyzepalrc')
     # Pack the config file for the botfarm.
     bot_config = textwrap.dedent('''\
         [deploy]
         bot={}
-        zuliprc=zuliprc
+        wyzepalrc=wyzepalrc
         '''.format(options.main))
     zip_file.writestr('config.ini', bot_config)
     zip_file.close()
@@ -236,7 +236,7 @@ def print_bots_pretty(bots: List[Any]) -> None:
 def main() -> None:
     usage = """tools/deploy <command> <bot-name> [options]
 
-This is tool meant to easily deploy bots to a Zulip Bot Farm.
+This is tool meant to easily deploy bots to a WyzePal Bot Farm.
 
 First, get your deploy token from the Botfarm server. We recommend saving your
 deploy-token as $TOKEN and the bot-farm server as $SERVER. If you want to manually
@@ -244,7 +244,7 @@ provide the SERVER and TOKEN values, use the --server="https://my-server.com"
 and --token="my-access-token" flags with each command. To deploy, run:
 
     tools/deploy prepare mybot \\
-        --path=/path/to/bot/directory --config=/path/to/zuliprc --main=main_bot_file.py
+        --path=/path/to/bot/directory --config=/path/to/wyzepalrc --main=main_bot_file.py
 
 Now, your bot is ready to start.
 
@@ -272,14 +272,14 @@ To list user's bots, use:
     parser.add_argument('--server', '-s',
                         metavar='SERVERURL',
                         default=os.environ.get('SERVER', ''),
-                        help='Url of the Zulip Botfarm server.')
+                        help='Url of the WyzePal Botfarm server.')
     parser.add_argument('--token', '-t',
                         default=os.environ.get('TOKEN', ''),
                         help='Deploy Token for the Botfarm.')
     parser.add_argument('--path', '-p',
                         help='Path to the bot directory.')
     parser.add_argument('--config', '-c',
-                        help='Path to the zuliprc file.')
+                        help='Path to the wyzepalrc file.')
     parser.add_argument('--main', '-m',
                         help='Path to the bot\'s main file, relative to the bot\'s directory.')
     parser.add_argument('--lines', '-l',

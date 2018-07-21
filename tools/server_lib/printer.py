@@ -4,9 +4,9 @@ import sys
 import os
 from itertools import cycle
 
-# <<<<<<< zulip/zulip
+# <<<<<<< wyzepal/wyzepal
 # sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-# from scripts.lib.zulip_tools import ENDC, BOLDRED, GREEN, YELLOW, BLUE, MAGENTA, CYAN
+# from scripts.lib.wyzepal_tools import ENDC, BOLDRED, GREEN, YELLOW, BLUE, MAGENTA, CYAN
 # =======
 # Color codes
 OKBLUE = '\033[94m'
@@ -23,7 +23,7 @@ YELLOW = '\x1b[33m'
 BLUE = '\x1b[34m'
 MAGENTA = '\x1b[35m'
 CYAN = '\x1b[36m'
-# >>>>>>> zulip/python-zulip-api
+# >>>>>>> wyzepal/python-wyzepal-api
 
 from typing import Union, Text
 

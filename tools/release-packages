@@ -95,51 +95,51 @@ def set_variable(fp, variable, value):
         fp=fp, variable=variable, value=value)
     print(crayons.white(message, bold=True))
 
-def update_requirements_in_zulip_repo(zulip_repo_dir, version, hash_or_tag):
-    common = os.path.join(zulip_repo_dir, 'requirements', 'common.in')
-    prod = os.path.join(zulip_repo_dir, 'requirements', 'prod.txt')
-    dev = os.path.join(zulip_repo_dir, 'requirements', 'dev.txt')
+def update_requirements_in_wyzepal_repo(wyzepal_repo_dir, version, hash_or_tag):
+    common = os.path.join(wyzepal_repo_dir, 'requirements', 'common.in')
+    prod = os.path.join(wyzepal_repo_dir, 'requirements', 'prod.txt')
+    dev = os.path.join(wyzepal_repo_dir, 'requirements', 'dev.txt')
 
-    def _edit_reqs_file(reqs, zulip_bots_line, zulip_line):
+    def _edit_reqs_file(reqs, wyzepal_bots_line, wyzepal_line):
         fh, temp_abs_path = tempfile.mkstemp()
         with os.fdopen(fh, 'w') as new_file, open(reqs) as old_file:
             for line in old_file:
-                if 'python-zulip-api' in line and 'zulip==' in line:
-                    new_file.write(zulip_line)
-                elif 'python-zulip-api' in line and 'zulip_bots' in line:
-                    new_file.write(zulip_bots_line)
+                if 'python-wyzepal-api' in line and 'wyzepal==' in line:
+                    new_file.write(wyzepal_line)
+                elif 'python-wyzepal-api' in line and 'wyzepal_bots' in line:
+                    new_file.write(wyzepal_bots_line)
                 else:
                     new_file.write(line)
 
         os.remove(reqs)
         shutil.move(temp_abs_path, reqs)
 
-    url_zulip = 'git+https://github.com/zulip/python-zulip-api.git@{tag}#egg={name}=={version}_git&subdirectory={name}\n'
-    url_zulip_bots = 'git+https://github.com/zulip/python-zulip-api.git@{tag}#egg={name}=={version}+git&subdirectory={name}\n'
-    zulip_bots_line = url_zulip_bots.format(tag=hash_or_tag, name='zulip_bots',
+    url_wyzepal = 'git+https://github.com/wyzepal/python-wyzepal-api.git@{tag}#egg={name}=={version}_git&subdirectory={name}\n'
+    url_wyzepal_bots = 'git+https://github.com/wyzepal/python-wyzepal-api.git@{tag}#egg={name}=={version}+git&subdirectory={name}\n'
+    wyzepal_bots_line = url_wyzepal_bots.format(tag=hash_or_tag, name='wyzepal_bots',
                                             version=version)
-    zulip_line = url_zulip.format(tag=hash_or_tag, name='zulip',
+    wyzepal_line = url_wyzepal.format(tag=hash_or_tag, name='wyzepal',
                                   version=version)
 
-    _edit_reqs_file(prod, zulip_bots_line, zulip_line)
-    _edit_reqs_file(dev, zulip_bots_line, zulip_line)
+    _edit_reqs_file(prod, wyzepal_bots_line, wyzepal_line)
+    _edit_reqs_file(dev, wyzepal_bots_line, wyzepal_line)
 
-    editable_zulip = '-e "{}"\n'.format(url_zulip.rstrip())
-    editable_zulip_bots = '-e "{}"\n'.format(url_zulip_bots.rstrip())
+    editable_wyzepal = '-e "{}"\n'.format(url_wyzepal.rstrip())
+    editable_wyzepal_bots = '-e "{}"\n'.format(url_wyzepal_bots.rstrip())
 
     _edit_reqs_file(
         common,
-        editable_zulip_bots.format(tag=hash_or_tag, name='zulip_bots', version=version),
-        editable_zulip.format(tag=hash_or_tag, name='zulip', version=version),
+        editable_wyzepal_bots.format(tag=hash_or_tag, name='wyzepal_bots', version=version),
+        editable_wyzepal.format(tag=hash_or_tag, name='wyzepal', version=version),
     )
 
-    message = 'Updated zulip API package requirements in the main repo.'
+    message = 'Updated wyzepal API package requirements in the main repo.'
     print(crayons.white(message, bold=True))
 
 def parse_args():
     usage = """
-Script to automate the PyPA release of the zulip, zulip_bots and
-zulip_botserver packages.
+Script to automate the PyPA release of the wyzepal, wyzepal_bots and
+wyzepal_botserver packages.
 
 For example, to make a release for version 0.4.0, execute the
 following steps in order:
@@ -153,25 +153,25 @@ following steps in order:
 
      ./tools/release-packages --build 0.4.0 --release
 
-4. After Step 3, commit the outstanding changes in your python-zulip-api
+4. After Step 3, commit the outstanding changes in your python-wyzepal-api
    repo.
 
 5. Create a release tag "0.4.0".
 
 6. Push the commit and the release tag.
 
-7. To update the zulip/requirements/* in the main zulip repo, run (this
+7. To update the wyzepal/requirements/* in the main wyzepal repo, run (this
    will update the requirements to install the packages off of the release
    tag "0.4.0"):
 
-     ./tools/release-packages update-main-repo PATH_TO_ZULIP_DIR 0.4.0
+     ./tools/release-packages update-main-repo PATH_TO_WYZEPAL_DIR 0.4.0
 
    You can also update the requirements to install the packages from a
    specific commit, like so:
 
-     ./tools/release-packages update-main-repo PATH_TO_ZULIP_DIR 0.4.0 --hash abcedef
+     ./tools/release-packages update-main-repo PATH_TO_WYZEPAL_DIR 0.4.0 --hash abcedef
 
-8. Commit and push the outstanding changes in your zulip/ repo.
+8. Commit and push the outstanding changes in your wyzepal/ repo.
 
 And you're done! Congrats!
 """
@@ -196,9 +196,9 @@ And you're done! Congrats!
     subparsers = parser.add_subparsers(dest='subcommand')
     parser_main_repo = subparsers.add_parser(
         'update-main-repo',
-        help='Update the zulip/requirements/* in the main zulip repo.'
+        help='Update the wyzepal/requirements/* in the main wyzepal repo.'
     )
-    parser_main_repo.add_argument('repo', metavar='PATH_TO_ZULIP_DIR')
+    parser_main_repo.add_argument('repo', metavar='PATH_TO_WYZEPAL_DIR')
     parser_main_repo.add_argument('version', metavar='version number of the packages')
     parser_main_repo.add_argument('--hash', metavar='COMMIT_HASH')
 
@@ -220,17 +220,17 @@ def main():
         for package_dir in package_dirs:
             cleanup(package_dir)
 
-        zulip_init = os.path.join(REPO_DIR, 'zulip', 'zulip', '__init__.py')
-        set_variable(zulip_init, '__version__', options.build)
-        bots_setup = os.path.join(REPO_DIR, 'zulip_bots', 'setup.py')
-        set_variable(bots_setup, 'ZULIP_BOTS_VERSION', options.build)
+        wyzepal_init = os.path.join(REPO_DIR, 'wyzepal', 'wyzepal', '__init__.py')
+        set_variable(wyzepal_init, '__version__', options.build)
+        bots_setup = os.path.join(REPO_DIR, 'wyzepal_bots', 'setup.py')
+        set_variable(bots_setup, 'WYZEPAL_BOTS_VERSION', options.build)
         set_variable(bots_setup, 'IS_PYPA_PACKAGE', True)
-        botserver_setup = os.path.join(REPO_DIR, 'zulip_botserver', 'setup.py')
-        set_variable(botserver_setup, 'ZULIP_BOTSERVER_VERSION', options.build)
+        botserver_setup = os.path.join(REPO_DIR, 'wyzepal_botserver', 'setup.py')
+        set_variable(botserver_setup, 'WYZEPAL_BOTSERVER_VERSION', options.build)
 
         for setup_file in setup_py_files:
             package_name = os.path.basename(os.path.dirname(setup_file))
-            if package_name == 'zulip_bots':
+            if package_name == 'wyzepal_bots':
                 generate_bdist_wheel(setup_file, package_name)
             else:
                 generate_bdist_wheel(setup_file, package_name, universal=True)
@@ -243,10 +243,10 @@ def main():
 
     if options.subcommand == 'update-main-repo':
         if options.hash:
-            update_requirements_in_zulip_repo(options.repo, options.version,
+            update_requirements_in_wyzepal_repo(options.repo, options.version,
                                               options.hash)
         else:
-            update_requirements_in_zulip_repo(options.repo, options.version,
+            update_requirements_in_wyzepal_repo(options.repo, options.version,
                                               options.version)
 
 if __name__ == '__main__':

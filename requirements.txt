@@ -4,6 +4,6 @@ coverage>=4.4.1
 pycodestyle==2.3.1
 mock
 pytest
--e ./zulip
--e ./zulip_bots
--e ./zulip_botserver
+-e ./wyzepal
+-e ./wyzepal_bots
+-e ./wyzepal_botserver

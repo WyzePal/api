@@ -165,18 +165,18 @@ def build_custom_checkers(by_lang):
         # This rule might give false positives in virtualenv setup files which should be excluded,
         # and comments which should be rewritten to avoid use of "python2", "python3", etc.
         {'pattern': 'python[23]',
-         'include_only': set(['zulip/', 'zulip_botserver/']),
+         'include_only': set(['wyzepal/', 'wyzepal_botserver/']),
          'description': 'Explicit python invocations should not include a version'},
         {'pattern': '__future__',
-         'include_only': set(['zulip_bots/zulip_bots/bots/']),
+         'include_only': set(['wyzepal_bots/wyzepal_bots/bots/']),
          'description': 'Bots no longer need __future__ imports.'},
         {'pattern': '#!/usr/bin/env python$',
-         'include_only': set(['zulip_bots/']),
+         'include_only': set(['wyzepal_bots/']),
          'description': 'Python shebangs must be python3'},
         {'pattern': '(^|\s)open\s*\(',
-         'description': 'open() should not be used in Zulip\'s bots. Use functions'
+         'description': 'open() should not be used in WyzePal\'s bots. Use functions'
                         ' provided by the bots framework to access the filesystem.',
-         'include_only': set(['zulip_bots/zulip_bots/bots/'])},
+         'include_only': set(['wyzepal_bots/wyzepal_bots/bots/'])},
         {'pattern': 'pprint',
          'description': 'Used pprint, which is most likely a debugging leftover. For user output, use print().'},
         {'pattern': '\(BotTestCase\)',
@@ -243,7 +243,7 @@ def build_custom_checkers(by_lang):
                 failed = True
 
         markdown_docs_length_exclude = {
-            "zulip_bots/zulip_bots/bots/converter/doc.md",
+            "wyzepal_bots/wyzepal_bots/bots/converter/doc.md",
             "tools/server_lib/README.md",
         }
         for fn in by_lang['md']:

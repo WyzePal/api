@@ -9,8 +9,8 @@ import glob
 from importlib import import_module
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-ZULIP_BOTS_DIR = os.path.join(CURRENT_DIR, '..', 'zulip_bots')
-sys.path.append(ZULIP_BOTS_DIR)
+WYZEPAL_BOTS_DIR = os.path.join(CURRENT_DIR, '..', 'wyzepal_bots')
+sys.path.append(WYZEPAL_BOTS_DIR)
 
 red = '\033[91m'
 green = '\033[92m'
@@ -37,7 +37,7 @@ the Python version this command is executed with."""
     # The output has the format "Python 1.2.3"
     py_version_list = py_version_output.split()[1].split('.')
     py_version = tuple(int(num) for num in py_version_list)
-    venv_name = 'zulip-api-py{}-venv'.format(py_version[0])
+    venv_name = 'wyzepal-api-py{}-venv'.format(py_version[0])
 
     if py_version <= (3, 1) and (not options.force):
         print(red + "Provision failed: Cannot create venv with outdated Python version ({}).\n"
@@ -98,7 +98,7 @@ the Python version this command is executed with."""
     # has requirements that must be satisfied prior to calling
     # it by setup().
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    bots_dir = os.path.join(current_dir, "..", "zulip_bots", "zulip_bots", "bots")
+    bots_dir = os.path.join(current_dir, "..", "wyzepal_bots", "wyzepal_bots", "bots")
     req_paths = glob.glob(bots_dir + "/*/requirements.txt")
     for req_path in req_paths:
         path_split = req_path.split(os.path.sep)[-5:]

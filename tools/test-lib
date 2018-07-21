@@ -3,4 +3,4 @@
 from server_lib.test_handler import handle_input_and_run_tests_for_package
 
 if __name__ == '__main__':
-    handle_input_and_run_tests_for_package('Bot library', ['zulip_bots', 'zulip_bots', 'tests'])
+    handle_input_and_run_tests_for_package('Bot library', ['wyzepal_bots', 'wyzepal_bots', 'tests'])

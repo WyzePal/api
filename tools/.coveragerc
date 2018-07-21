@@ -16,10 +16,10 @@ exclude_lines =
     def __unicode__[(]self[)]:
 
 [run]
-source = zulip, zulip_bots, zulip_botserver
+source = wyzepal, wyzepal_bots, wyzepal_botserver
 omit =
     # Parts of the test runner infrastructure
     tools/test-main
     tools/test-bots
     tools/test-botserver
-    tools/test-zulip
+    tools/test-wyzepal
