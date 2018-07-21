@@ -1,11 +1,9 @@
 # WyzePal bots
 
-This directory contains the source code for the `wyzepal_bots` PyPI package.
-
-The WyzePal documentation has guides on [using WyzePal's bot system](
-https://chat.wyzepal.org/api/running-bots)
+The Zulip documentation has guides on [using Zulip's bot system](
+https://chat.zulip.org/api/running-bots)
 and [writing your own bots](
-https://chat.wyzepal.org/api/writing-bots).
+https://chat.zulip.org/api/writing-bots).
 
 ## Directory structure
 

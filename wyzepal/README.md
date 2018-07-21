@@ -1,6 +1,6 @@
 #### Dependencies
 
-The [WyzePal API](https://wyzepalchat.com/api) Python bindings require the
+The [Zulip API](https://wyzepalchat.com/api) Python bindings require the
 following Python libraries:
 
 * requests (version >= 0.12.1)
