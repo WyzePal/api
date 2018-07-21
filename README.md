@@ -1,3 +1,5 @@
+forked from https://github.com/zulip/python-zulip-api
+
 # Zulip API
 
 ![Build status](https://travis-ci.org/zulip/python-zulip-api.svg?branch=master)
