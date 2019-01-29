@@ -3,7 +3,7 @@
 #
 # RSS integration for WyzePal
 #
-# Copyright © 2014 Zulip, Inc.
+# Copyright © 2014 Zulip,Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -200,6 +200,7 @@ except IOError:
     log_error_and_exit("Unable to read feed file at %s." % (opts.feed_file,))
 
 client = wyzepal.Client(email=opts.wyzepal_email, api_key=opts.wyzepal_api_key,
+                      config_file=opts.wyzepal_config_file,
                       site=opts.wyzepal_site, client="WyzePalRSS/" + VERSION)  # type: wyzepal.Client
 
 first_message = True  # type: bool

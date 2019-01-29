@@ -10,7 +10,7 @@ import subprocess
 if False:
     from typing import Any, Dict, Optional
 
-WYZEPAL_BOTS_VERSION = "0.5.1"
+WYZEPAL_BOTS_VERSION = "0.5.8"
 IS_PYPA_PACKAGE = False
 
 
@@ -29,8 +29,8 @@ package_info = dict(
     name='wyzepal_bots',
     version=WYZEPAL_BOTS_VERSION,
     description='WyzePal\'s Bot framework',
-    author='Zulp Open Source Project',
-    author_email='zulip-devel@googlegroups.com',
+    author='WyzePal Open Source Project',
+    author_email='wyzepal-devel@googlegroups.com',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
@@ -38,7 +38,7 @@ package_info = dict(
         'License :: OSI Approved :: MIT License',
         'Topic :: Communications :: Chat',
     ],
-    url='https://www.zulip.org/',
+    url='https://www.wyzepal.org/',
     entry_points={
         'console_scripts': [
             'wyzepal-run-bot=wyzepal_bots.run:main',

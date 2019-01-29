@@ -5,6 +5,7 @@ import os
 import signal
 import sys
 import time
+import re
 
 
 from typing import Any, Optional, List, Dict, IO, Text
@@ -29,6 +30,22 @@ def get_bots_directory_path() -> str:
     current_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(current_dir, 'bots')
 
+def wyzepal_env_vars_are_present() -> bool:
+    # We generally require a WyzePal config file, but if
+    # the user supplies the correct environment vars, we
+    # waive the requirement.  This can be helpful for
+    # containers like Heroku that prefer env vars to config
+    # files.
+    if os.environ.get('WYZEPAL_EMAIL') is None:
+        return False
+    if os.environ.get('WYZEPAL_API_KEY') is None:
+        return False
+    if os.environ.get('WYZEPAL_SITE') is None:
+        return False
+
+    # If none of the absolutely critical env vars are
+    # missing, we can proceed without a config file.
+    return True
 
 class RateLimit(object):
     def __init__(self, message_limit: int, interval_limit: int) -> None:
@@ -71,7 +88,7 @@ class StateHandler(object):
 
         response = self._client.get_storage({'keys': [key]})
         if response['result'] != 'success':
-            raise StateHandlerError("Error fetching state: {}".format(str(response)))
+            raise KeyError('key not found: ' + key)
 
         marshalled_value = response['storage'][key]
         self.state_[key] = marshalled_value
@@ -238,10 +255,18 @@ def extract_query_without_mention(message: Dict[str, Any], client: ExternalBotHa
     If the bot is the first @mention in the message, then this function returns
     the stripped message with the bot's @mention removed.  Otherwise, it returns None.
     """
+    content = message['content']
     mention = '@**' + client.full_name + '**'
-    if not message['content'].startswith(mention):
-        return None
-    return message['content'][len(mention):].lstrip()
+    extended_mention_regex = re.compile(r'^@\*\*.*\|' + str(client.user_id) + r'\*\*')
+    extended_mention_match = extended_mention_regex.match(content)
+
+    if extended_mention_match:
+        return content[extended_mention_match.end():].lstrip()
+
+    if content.startswith(mention):
+        return content[len(mention):].lstrip()
+
+    return None
 
 
 def is_private_message_from_another_user(message_dict: Dict[str, Any], current_user_id: int) -> bool:

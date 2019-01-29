@@ -2,12 +2,22 @@
 
 Usage :
 
-1. Fill the needed information in `wyzepal_trello_config.py` :
+1. Make sure you have all of the relevant Trello credentials before
+   executing the script:
 
-    - The Trello API KEY,
-    - The Trello TOKEN,
+    - The Trello API KEY
+    - The Trello TOKEN
     - The WyzePal webhook URL
+    - Trello board name
+    - Trello board ID
 
 2. Execute the script :
 
-    $ python wyzepal_trello.py <trello_board_name> <trello_board_id>
+    $ python wyzepal_trello.py --trello-board-name <trello_board_name> \
+                             --trello-board-id   <trello_board_id> \
+                             --trello-api-key  <trello_api_key> \
+                             --trello-token <trello_token> \
+                             --wyzepal-webhook-url <wyzepal_webhook_url>
+
+For more information, please see WyzePal's documentation on how to set up
+a Trello integration [here](https://wyzepalchat.com/integrations/doc/trello).

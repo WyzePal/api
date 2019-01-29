@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright © 2012-2014 Zulip, Inc.
+# Copyright © 2012-2014 Zulip,Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ import logging
 import six
 from typing import Any, Callable, Dict, Iterable, IO, List, Mapping, Optional, Text, Tuple, Union
 
-__version__ = "0.5.1"
+__version__ = "0.5.8"
 
 logger = logging.getLogger(__name__)
 
@@ -472,8 +472,9 @@ class Client(object):
             vendor_version=vendor_version,
         )
 
-    def do_api_query(self, orig_request, url, method="POST", longpolling=False, files=None):
-        # type: (Mapping[str, Any], str, str, bool, Optional[List[IO[Any]]]) -> Dict[str, Any]
+    def do_api_query(self, orig_request, url, method="POST",
+                     longpolling=False, files=None, timeout=None):
+        # type: (Mapping[str, Any], str, str, bool, Optional[List[IO[Any]]], Optional[float]) -> Dict[str, Any]
         if files is None:
             files = []
 
@@ -481,10 +482,10 @@ class Client(object):
             # When long-polling, set timeout to 90 sec as a balance
             # between a low traffic rate and a still reasonable latency
             # time in case of a connection failure.
-            request_timeout = 90
+            request_timeout = 90.
         else:
             # Otherwise, 15s should be plenty of time.
-            request_timeout = 15
+            request_timeout = 15. if not timeout else timeout
 
         request = {}
         req_files = []
@@ -606,8 +607,9 @@ class Client(object):
             return {'msg': "Unexpected error from the server", "result": "http-error",
                     "status_code": res.status_code}
 
-    def call_endpoint(self, url=None, method="POST", request=None, longpolling=False, files=None):
-        # type: (Optional[str], str, Optional[Dict[str, Any]], bool, Optional[List[IO[Any]]]) -> Dict[str, Any]
+    def call_endpoint(self, url=None, method="POST", request=None,
+                      longpolling=False, files=None, timeout=None):
+        # type: (Optional[str], str, Optional[Dict[str, Any]], bool, Optional[List[IO[Any]]], Optional[float]) -> Dict[str, Any]
         if request is None:
             request = dict()
         marshalled_request = {}
@@ -616,7 +618,7 @@ class Client(object):
                 marshalled_request[k] = v
         versioned_url = API_VERSTRING + (url if url is not None else "")
         return self.do_api_query(marshalled_request, versioned_url, method=method,
-                                 longpolling=longpolling, files=files)
+                                 longpolling=longpolling, files=files, timeout=timeout)
 
     def call_on_each_event(self, callback, event_types=None, narrow=None):
         # type: (Callable[[Dict[str, Any]], None], Optional[List[str]], Optional[List[List[str]]]) -> None
@@ -657,7 +659,11 @@ class Client(object):
                 else:
                     if self.verbose:
                         print("Server returned error:\n%s" % res["msg"])
-                    if res["msg"].startswith("Bad event queue id:"):
+                    # Eventually, we'll only want the
+                    # BAD_EVENT_QUEUE_ID check, but we check for the
+                    # old string to support legacy WyzePal servers.  We
+                    # should remove that legacy check in 2019.
+                    if res.get("code") == "BAD_EVENT_QUEUE_ID" or res["msg"].startswith("Bad event queue id:"):
                         # Our event queue went away, probably because
                         # we were asleep or the server restarted
                         # abnormally.  We may have missed some
@@ -759,6 +765,50 @@ class Client(object):
             request=update_data
         )
 
+    def mark_all_as_read(self):
+        # type: () -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.mark_all_as_read()
+            {'result': 'success', 'msg': ''}
+        '''
+        return self.call_endpoint(
+            url='mark_all_as_read',
+            method='POST',
+        )
+
+    def mark_stream_as_read(self, stream_id):
+        # type: (int) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.mark_stream_as_read(42)
+            {'result': 'success', 'msg': ''}
+        '''
+        return self.call_endpoint(
+            url='mark_stream_as_read',
+            method='POST',
+            request={'stream_id': stream_id},
+        )
+
+    def mark_topic_as_read(self, stream_id, topic_name):
+        # type: (int, str) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.mark_all_as_read(42, 'new coffee machine')
+            {'result': 'success', 'msg': ''}
+        '''
+        return self.call_endpoint(
+            url='mark_topic_as_read',
+            method='POST',
+            request={
+                'stream_id': stream_id,
+                'topic_name': topic_name,
+            },
+        )
+
     def get_message_history(self, message_id):
         # type: (int) -> Dict[str, Any]
         '''
@@ -769,14 +819,121 @@ class Client(object):
             method='GET'
         )
 
+    def add_reaction(self, reaction_data):
+        # type: (Dict[str, str]) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.add_emoji_reaction({
+                'message_id': '100',
+                'emoji_name': 'joy',
+                'emoji_code': '1f602',
+                'emoji_type': 'unicode_emoji'
+            })
+            {'result': 'success', 'msg': ''}
+        '''
+        return self.call_endpoint(
+            url='messages/{}/reactions'.format(reaction_data['message_id']),
+            method='POST',
+        )
+
+    def remove_reaction(self, reaction_data):
+        # type: (Dict[str, str]) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.remove_reaction({
+                'message_id': '100',
+                'emoji_name': 'joy',
+                'emoji_code': '1f602',
+                'emoji_type': 'unicode_emoji'
+            })
+            {'msg': '', 'result': 'success'}
+        '''
+        return self.call_endpoint(
+            url='messages/{}/reactions'.format(reaction_data['message_id']),
+            method='DELETE',
+            request=reaction_data,
+        )
+
     def get_realm_emoji(self):
         # type: () -> Dict[str, Any]
         '''
             See examples/realm-emoji for example usage.
         '''
         return self.call_endpoint(
-            url='/realm/emoji',
+            url='realm/emoji',
             method='GET'
+        )
+
+    def upload_custom_emoji(self, emoji_name, file_obj):
+        # type: (str, IO[Any]) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.upload_custom_emoji(emoji_name, file_obj)
+            {'result': 'success', 'msg': ''}
+        '''
+        return self.call_endpoint(
+            'realm/emoji/{}'.format(emoji_name),
+            method='POST',
+            files=[file_obj]
+        )
+
+    def get_realm_filters(self):
+        # type: () -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.get_realm_filters()
+            {'result': 'success', 'msg': '', 'filters': [['#(?P<id>[0-9]+)', 'https://github.com/wyzepal/wyzepal/issues/%(id)s', 1]]}
+        '''
+        return self.call_endpoint(
+            url='realm/filters',
+            method='GET',
+        )
+
+    def add_realm_filter(self, pattern, url_format_string):
+        # type: (str, str) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.add_realm_filter('#(?P<id>[0-9]+)', 'https://github.com/wyzepal/wyzepal/issues/%(id)s')
+            {'result': 'success', 'msg': '', 'id': 42}
+        '''
+        return self.call_endpoint(
+            url='realm/filters',
+            method='POST',
+            request={
+                'pattern': pattern,
+                'url_format_string': url_format_string,
+            },
+        )
+
+    def remove_realm_filter(self, filter_id):
+        # type: (int) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.remove_realm_filter(42)
+            {'result': 'success', 'msg': ''}
+        '''
+        return self.call_endpoint(
+            url='realm/filters/{}'.format(filter_id),
+            method='DELETE',
+        )
+
+    def get_server_settings(self):
+        # type: () -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.get_server_settings()
+            {'msg': '', 'result': 'success', 'wyzepal_version': '1.9.0', 'push_notifications_enabled': False, ...}
+        '''
+        return self.call_endpoint(
+            url='server_settings',
+            method='GET',
         )
 
     def get_events(self, **request):
@@ -816,8 +973,8 @@ class Client(object):
             request=request,
         )
 
-    def deregister(self, queue_id):
-        # type: (str) -> Dict[str, Any]
+    def deregister(self, queue_id, timeout=None):
+        # type: (str, Optional[float]) -> Dict[str, Any]
         '''
             Example usage:
 
@@ -832,6 +989,7 @@ class Client(object):
             url="events",
             method="DELETE",
             request=request,
+            timeout=timeout,
         )
 
     def get_profile(self, request=None):
@@ -848,17 +1006,35 @@ class Client(object):
             request=request,
         )
 
-    def get_presence(self, email):
+    def get_user_presence(self, email):
         # type: (Dict[str, Any]) -> Dict[str, Any]
         '''
             Example usage:
 
-            >>> client.get_presence()
+            >>> client.get_user_presence('iago@wyzepal.com')
             {'presence': {'website': {'timestamp': 1486799122, 'status': 'active'}}, 'result': 'success', 'msg': ''}
         '''
         return self.call_endpoint(
             url='users/%s/presence' % (email,),
             method='GET',
+        )
+
+    def update_presence(self, request):
+        # type: (Dict[str, Any]) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.update_presence({
+                    status='active',
+                    ping_only=False,
+                    new_user_input=False,
+                })
+                {'result': 'success', 'server_timestamp': 1333649180.7073195, 'presences': {'iago@wyzepal.com': { ... }}, 'msg': ''}
+        '''
+        return self.call_endpoint(
+            url='users/me/presence',
+            method='POST',
+            request=request,
         )
 
     def get_streams(self, **request):
@@ -882,6 +1058,16 @@ class Client(object):
             url='streams/{}'.format(stream_data['stream_id']),
             method='PATCH',
             request=stream_data,
+        )
+
+    def delete_stream(self, stream_id):
+        # type: (int) -> Dict[str, Any]
+        '''
+            See examples/delete-stream for example usage.
+        '''
+        return self.call_endpoint(
+            url='streams/{}'.format(stream_id),
+            method='DELETE',
         )
 
     def get_members(self, request=None):
@@ -1009,6 +1195,23 @@ class Client(object):
             request={'subscription_data': subscription_data}
         )
 
+    def update_notification_settings(self, notification_settings):
+        # type: (Dict[str, Any]) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.update_notification_settings({
+                'enable_stream_push_notifications': True,
+                'enable_offline_push_notifications': False,
+            })
+            {'enable_offline_push_notifications': False, 'enable_stream_push_notifications': True, 'msg': '', 'result': 'success'}
+        '''
+        return self.call_endpoint(
+            url='settings/notifications',
+            method='PATCH',
+            request=notification_settings,
+        )
+
     def get_stream_id(self, stream):
         # type: (str) -> Dict[str, Any]
         '''
@@ -1030,6 +1233,83 @@ class Client(object):
         return self.call_endpoint(
             url='users/me/{}/topics'.format(stream_id),
             method='GET'
+        )
+
+    def get_user_groups(self):
+        # type: () -> Dict[str, Any]
+        '''
+            Example usage:
+            >>> client.get_user_groups()
+            {'result': 'success', 'msg': '', 'user_groups': [{...}, {...}]}
+        '''
+        return self.call_endpoint(
+            url='user_groups',
+            method='GET',
+        )
+
+    def create_user_group(self, group_data):
+        # type: (Dict[str, Any]) -> Dict[str, Any]
+        '''
+            Example usage:
+            >>> client.create_user_group({
+                'name': 'marketing',
+                'description': "Members of ACME Corp.'s marketing team.",
+                'members': [4, 8, 15, 16, 23, 42],
+            })
+            {'msg': '', 'result': 'success'}
+        '''
+        return self.call_endpoint(
+            url='user_groups/create',
+            method='POST',
+            request=group_data,
+        )
+
+    def update_user_group(self, group_data):
+        # type: (Dict[str, Any]) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.update_user_group({
+                'group_id': 1,
+                'name': 'marketing',
+                'description': "Members of ACME Corp.'s marketing team.",
+            })
+            {'description': 'Description successfully updated.', 'name': 'Name successfully updated.', 'result': 'success', 'msg': ''}
+        '''
+        return self.call_endpoint(
+            url='user_groups/{}'.format(group_data['group_id']),
+            method='PATCH',
+            request=group_data,
+        )
+
+    def remove_user_group(self, group_id):
+        # type: (int) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.remove_user_group(42)
+            {'msg': '', 'result': 'success'}
+        '''
+        return self.call_endpoint(
+            url='user_groups/{}'.format(group_id),
+            method='DELETE',
+        )
+
+    def update_user_group_members(self, group_data):
+        # type: (Dict[str, Any]) -> Dict[str, Any]
+        '''
+            Example usage:
+
+            >>> client.update_user_group_members({
+                'delete': [4, 8, 15],
+                'add': [16, 23, 42],
+            })
+            {'msg': '', 'result': 'success'}
+        '''
+        return self.call_endpoint(
+            url='user_groups/{}/members'.format(group_data['group_id']),
+            method='POST',
+            request=group_data,
         )
 
     def get_subscribers(self, **request):
@@ -1104,6 +1384,22 @@ class Client(object):
             url='bot_storage',
             method='GET',
             request=request,
+        )
+
+    def set_typing_status(self, request):
+        # type: (Dict[str, Any]) -> Dict[str, Any]
+        '''
+            Example usage:
+            >>> client.set_typing_status({
+                'op': 'start',
+                'to': ['iago@wyzepal.com', 'polonius@wyzepal.com'],
+            })
+            {'result': 'success', 'msg': ''}
+        '''
+        return self.call_endpoint(
+            url='typing',
+            method='POST',
+            request=request
         )
 
 class WyzePalStream(object):

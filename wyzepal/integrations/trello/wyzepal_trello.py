@@ -5,39 +5,19 @@
 
 
 from __future__ import absolute_import
+from __future__ import print_function
 
 import sys
 import argparse
-import requests
 
-import wyzepal_trello_config as configuration
+try:
+    import requests
+except ImportError:
+    print("Error: Please install the python requests library before running this script:")
+    print("http://docs.python-requests.org/en/master/user/install/")
+    sys.exit(1)
 
-
-def check_configuration() -> None:
-    """check_configuration
-
-    Check if configuration fields have been populated in
-    wyzepal_trello_config.py
-    """
-
-    errors = []
-
-    if not configuration.TRELLO_API_KEY:
-        errors.append('Error: TRELLO_API_KEY is not defined in wyzepal_trello_config.py')
-
-    if not configuration.TRELLO_TOKEN:
-        errors.append('Error: TRELLO_TOKEN is not defined in wyzepal_trello_config.py')
-
-    if not configuration.WYZEPAL_WEBHOOK_URL:
-        errors.append('Error: WYZEPAL_WEBHOOK_URL is not defined in wyzepal_trello_config.py')
-
-    if len(errors) > 0:
-        for error in errors:
-            print(error)
-
-        sys.exit(1)
-
-def get_model_id(options: argparse.Namespace) -> str:
+def get_model_id(options):
     """get_model_id
 
     Get Model Id from Trello API
@@ -53,8 +33,8 @@ def get_model_id(options: argparse.Namespace) -> str:
     )
 
     params = {
-        'key': configuration.TRELLO_API_KEY,
-        'token': configuration.TRELLO_TOKEN,
+        'key': options.trello_api_key,
+        'token': options.trello_token,
     }
 
     trello_response = requests.get(
@@ -71,7 +51,7 @@ def get_model_id(options: argparse.Namespace) -> str:
     return board_info_json['id']
 
 
-def get_webhook_id(options: argparse.Namespace, id_model: str) -> str:
+def get_webhook_id(options, id_model):
     """get_webhook_id
 
     Get webhook id from Trello API
@@ -86,12 +66,12 @@ def get_webhook_id(options: argparse.Namespace, id_model: str) -> str:
     trello_api_url = 'https://api.trello.com/1/webhooks/'
 
     data = {
-        'key': configuration.TRELLO_API_KEY,
-        'token': configuration.TRELLO_TOKEN,
+        'key': options.trello_api_key,
+        'token': options.trello_token,
         'description': 'Webhook for WyzePal integration (From Trello {} to WyzePal)'.format(
             options.trello_board_name,
         ),
-        'callbackURL': configuration.WYZEPAL_WEBHOOK_URL,
+        'callbackURL': options.wyzepal_webhook_url,
         'idModel': id_model
     }
 
@@ -108,25 +88,7 @@ def get_webhook_id(options: argparse.Namespace, id_model: str) -> str:
 
     return webhook_info_json['id']
 
-
-def log_webhook_info(options: argparse.Namespace, id_webhook: str) -> None:
-    """log_webhook_info
-
-    Log webhook info in csv file for possible future use
-
-    :options: argparse.Namespace arguments
-    :id_webhook: str Trello webhook id
-    """
-
-    with open('wyzepal_trello_webhooks.csv', 'a') as webhooks_file:
-        webhooks_file.write(
-            '{},{}\n'.format(
-                options.trello_board_name,
-                id_webhook
-            )
-        )
-
-def create_webhook(options: argparse.Namespace) -> None:
+def create_webhook(options):
     """create_webhook
 
     Create Trello webhook
@@ -146,25 +108,43 @@ def create_webhook(options: argparse.Namespace) -> None:
     id_webhook = get_webhook_id(options, id_model)
 
     if id_webhook:
-        print('Success! The webhook id is', id_webhook)
+        print('Success! The webhook ID is', id_webhook)
 
-    # The webhook was successfully created,
-    # Log informations for possible future needs
-    print('Logging webhook information')
-
-    log_webhook_info(options, id_webhook)
     print('Success! The webhook for the {} Trello board was successfully created.'.format(
         options.trello_board_name))
-    print('\nYou can find the webhooks information in the wyzepal_trello_webhooks.csv file.')
 
+def main():
+    description = """
+wyzepal_trello.py is a handy little script that allows WyzePal users to
+quickly set up a Trello webhook.
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument('trello_board_name', help='The Trello board name.')
-    parser.add_argument('trello_board_id', help='The Trello board short id.')
+Note: The Trello webhook instructions available on your WyzePal server
+may be outdated. Please make sure you follow the updated instructions
+at <https://wyzepalchat.com/integrations/doc/trello>.
+"""
+
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('--trello-board-name',
+                        required=True,
+                        help='The Trello board name.')
+    parser.add_argument('--trello-board-id',
+                        required=True,
+                        help=('The Trello board short ID. Can usually be found '
+                              'in the URL of the Trello board.'))
+    parser.add_argument('--trello-api-key',
+                        required=True,
+                        help=('Visit https://trello.com/1/appkey/generate to generate '
+                              'an APPLICATION_KEY (need to be logged into Trello).'))
+    parser.add_argument('--trello-token',
+                        required=True,
+                        help=('Visit https://trello.com/1/appkey/generate and under '
+                              '`Developer API Keys`, click on `Token` and generate '
+                              'a Trello access token.'))
+    parser.add_argument('--wyzepal-webhook-url',
+                        required=True,
+                        help='The webhook URL that Trello will query.')
 
     options = parser.parse_args()
-    check_configuration()
     create_webhook(options)
 
 if __name__ == '__main__':

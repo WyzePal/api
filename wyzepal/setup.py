@@ -31,7 +31,7 @@ package_info = dict(
     name='wyzepal',
     version=version(),
     description='Bindings for the WyzePal message API',
-    author='Zulp Open Source Project',
+    author='Zulip Open Source Project',
     author_email='zulip-devel@googlegroups.com',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -46,7 +46,8 @@ package_info = dict(
     entry_points={
         'console_scripts': [
             'wyzepal-send=wyzepal.send:main',
-            'wyzepal-api-examples=wyzepal.api_examples:main'
+            'wyzepal-api-examples=wyzepal.api_examples:main',
+            'wyzepal-matrix-bridge=integrations.bridge_with_matrix.matrix_bridge:main',
         ],
     },
     package_data={'wyzepal': ["py.typed"]},
@@ -56,6 +57,7 @@ setuptools_info = dict(
     install_requires=['requests[security]>=0.12.1',
                       'six',
                       'typing>=3.5.2.2',
+                      'matrix_client',
                       ],
 )
 

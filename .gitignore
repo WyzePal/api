@@ -45,6 +45,9 @@ wyzepalrc
 botserverrc
 .botserverrc
 
+# vim
+.swp
+
 # mypy
 .mypy_cache
 

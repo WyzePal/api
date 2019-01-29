@@ -7,11 +7,14 @@ import os
 from os.path import basename, splitext
 
 from wyzepal_bots.lib import (
+    wyzepal_env_vars_are_present,
     run_message_handler_for_bot,
     NoBotConfigException,
 )
 from wyzepal_bots import finder
 from wyzepal_bots.provision import provision_bot
+
+from typing import Optional
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -32,7 +35,6 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument('--config-file', '-c',
                         action='store',
-                        required=True,
                         help='wyzepal configuration file (e.g. ~/Downloads/wyzepalrc)')
 
     parser.add_argument('--bot-config-file', '-b',
@@ -51,17 +53,36 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
-def exit_gracefully_if_wyzepal_config_file_does_not_exist(config_file: str) -> None:
-    if not os.path.exists(config_file):
-        print('''
-            ERROR: %s does not exist.
+def exit_gracefully_if_wyzepal_config_is_missing(config_file: Optional[str]) -> None:
+    error_msg = None
 
+    if config_file:
+        if os.path.exists(config_file):
+            # We're good.  (There may be problems with the config file,
+            # but we'll catch those later.
+            return
+        else:
+            error_msg = 'ERROR: %s does not exist.' % (config_file,)
+
+    else:
+        if wyzepal_env_vars_are_present():
+            return
+        else:
+            error_msg = 'ERROR: You did not supply a WyzePal config file.'
+
+    if error_msg:
+        print('\n')
+        print(error_msg)
+        print('''
             You may need to download a config file from the WyzePal app, or
             if you have already done that, you need to specify the file
-            location correctly.
-            ''' % (config_file,))
-        sys.exit(1)
+            location correctly on the command line.
 
+            If you don't want to use a config file, you must set
+            these env vars: WYZEPAL_EMAIL, WYZEPAL_API_KEY, WYZEPAL_SITE.
+        ''')
+
+        sys.exit(1)
 
 def exit_gracefully_if_bot_config_file_does_not_exist(bot_config_file: str) -> None:
     if bot_config_file is None:
@@ -120,7 +141,7 @@ def main() -> None:
     # It's a bit unfortunate that we have two config files, but the
     # alternative would be way worse for people running multiple bots
     # or testing against multiple WyzePal servers.
-    exit_gracefully_if_wyzepal_config_file_does_not_exist(args.config_file)
+    exit_gracefully_if_wyzepal_config_is_missing(args.config_file)
     exit_gracefully_if_bot_config_file_does_not_exist(args.bot_config_file)
 
     try:

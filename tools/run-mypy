@@ -29,6 +29,10 @@ exclude = [
     "wyzepal_bots/wyzepal_bots/terminal.py",
     "wyzepal_bots/wyzepal_bots/simple_lib.py",
     "wyzepal_bots/wyzepal_bots/tests/test_lib.py",
+    # Excluded because this is a self-contained script
+    # we ask our users to download and run directly and
+    # py2 and py3 compatibility is required.
+    "wyzepal/integrations/trello/wyzepal_trello.py",
     "tools",
 ]
 

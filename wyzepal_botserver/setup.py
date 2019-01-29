@@ -7,14 +7,14 @@ import sys
 if False:
     from typing import Any, Dict, Optional
 
-WYZEPAL_BOTSERVER_VERSION = "0.5.1"
+WYZEPAL_BOTSERVER_VERSION = "0.5.8"
 
 # We should be installable with either setuptools or distutils.
 package_info = dict(
     name='wyzepal_botserver',
     version=WYZEPAL_BOTSERVER_VERSION,
     description='WyzePal\'s Flask server for running bots',
-    author='Zulp Open Source Project',
+    author='Zulip Open Source Project',
     author_email='zulip-devel@googlegroups.com',
     classifiers=[
         'Development Status :: 4 - Beta',
