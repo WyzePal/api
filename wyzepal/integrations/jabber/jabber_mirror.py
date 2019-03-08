@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (C) 2014 Zulip,Inc.
+# Copyright (C) 2014 WyzePal, Inc.
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation files

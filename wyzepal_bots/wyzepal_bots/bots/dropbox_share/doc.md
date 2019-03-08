@@ -1,6 +1,6 @@
 # Dropbox Bot
 
-This bot links your [dropbox](https://www.dropbox.com) account to [wyzepal](https://chat.wyzepal.org).
+This bot links your [dropbox](https://www.dropbox.com) account to [wyzepal](https://chat.wyzepal.com).
 
 ## Usage
 
@@ -11,7 +11,7 @@ This bot links your [dropbox](https://www.dropbox.com) account to [wyzepal](http
     [dropbox_share]
     ACCESS_TOKEN=<your_access_token>
     ```
- - Follow the instructions as described in [here](https://wyzepalchat.com/api/running-bots#running-a-bot).
+ - Follow the instructions as described in [here](https://wyzepal.com/api/running-bots#running-a-bot).
  - Run the bot: `wyzepal-run-bot dropbox_share -b <Path/to/dropbox_share.conf> -c <Path/to/wyzepalrc>`
 
 Use this bot with any of the following commands:

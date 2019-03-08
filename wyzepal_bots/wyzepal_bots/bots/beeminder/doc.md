@@ -27,13 +27,13 @@ Under **APPS & API** section you will find your **auth token**.
 
 3. **Goalname**
   - The name of your Beeminder goal for which you want to
-add datapoints from [WyzePal](https://wyzepalchat.com/)
+add datapoints from [WyzePal](https://wyzepal.com/)
 
 Once you have above information, you should supply
 them in `beeminder.conf` file.
 
 Run this bot as described in
-[here](https://wyzepalchat.com/api/running-bots#running-a-bot).
+[here](https://wyzepal.com/api/running-bots#running-a-bot).
 
 ## Usage
 

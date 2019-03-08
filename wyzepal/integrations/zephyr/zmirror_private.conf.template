@@ -1,5 +1,5 @@
 [program:zmirror-USERNAME]
-command=/home/wyzepal/python-wyzepal-api/wyzepal/integrations/zephyr/zephyr_mirror_backend.py --stamp-path=/home/wyzepal/wyzepal --user=USERNAME --log-path=/home/wyzepal/logs/mirror-log-%(program_name)s --use-sessions --session-path=/home/wyzepal/zephyr_sessions/%(program_name)s --api-key-file=/home/wyzepal/api-keys/%(program_name)s --ignore-expired-tickets --nagios-path=/home/wyzepal/mirror_status/%(program_name)s --nagios-class=wyzepal-mirror-nagios --site=https://zephyr.wyzepalchat.com
+command=/home/wyzepal/python-wyzepal-api/wyzepal/integrations/zephyr/zephyr_mirror_backend.py --stamp-path=/home/wyzepal/wyzepal --user=USERNAME --log-path=/home/wyzepal/logs/mirror-log-%(program_name)s --use-sessions --session-path=/home/wyzepal/zephyr_sessions/%(program_name)s --api-key-file=/home/wyzepal/api-keys/%(program_name)s --ignore-expired-tickets --nagios-path=/home/wyzepal/mirror_status/%(program_name)s --nagios-class=wyzepal-mirror-nagios --site=https://zephyr.wyzepal.com
 priority=200                   ; the relative start priority (default 999)
 autostart=true                 ; start at supervisord start (default: true)
 autorestart=true               ; whether/when to restart (default: unexpected)

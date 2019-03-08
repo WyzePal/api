@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright © 2012-2014 Zulip,Inc.
+# Copyright © 2012-2014 WyzePal, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ import logging
 import six
 from typing import Any, Callable, Dict, Iterable, IO, List, Mapping, Optional, Text, Tuple, Union
 
-__version__ = "0.5.8"
+__version__ = "0.5.9"
 
 logger = logging.getLogger(__name__)
 
@@ -824,17 +824,18 @@ class Client(object):
         '''
             Example usage:
 
-            >>> client.add_emoji_reaction({
+            >>> client.add_reaction({
                 'message_id': '100',
                 'emoji_name': 'joy',
                 'emoji_code': '1f602',
-                'emoji_type': 'unicode_emoji'
+                'reaction_type': 'unicode_emoji'
             })
             {'result': 'success', 'msg': ''}
         '''
         return self.call_endpoint(
             url='messages/{}/reactions'.format(reaction_data['message_id']),
             method='POST',
+            request=reaction_data,
         )
 
     def remove_reaction(self, reaction_data):
@@ -846,7 +847,7 @@ class Client(object):
                 'message_id': '100',
                 'emoji_name': 'joy',
                 'emoji_code': '1f602',
-                'emoji_type': 'unicode_emoji'
+                'reaction_type': 'unicode_emoji'
             })
             {'msg': '', 'result': 'success'}
         '''

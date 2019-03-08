@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # WyzePal hook for Mercurial changeset pushes.
-# Copyright Â© 2012-2014 Zulip,Inc.
+# Copyright Â© 2012-2014 WyzePal, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 #
 #
 # This hook is called when changesets are pushed to the master repository (ie
-# `hg push`). See https://wyzepalchat.com/integrations for installation instructions.
+# `hg push`). See https://wyzepal.com/integrations for installation instructions.
 from __future__ import absolute_import
 
 import wyzepal

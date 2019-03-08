@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (C) 2012 Zulip,Inc.
+# Copyright (C) 2012 WyzePal, Inc.
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation files
@@ -633,7 +633,7 @@ def forward_to_zephyr(message):
     # 'Any' can be of any type of text
     support_heading = "Hi there! This is an automated message from WyzePal."
     support_closing = """If you have any questions, please be in touch through the \
-Feedback button or at support@wyzepalchat.com."""
+Feedback button or at support@wyzepal.com."""
 
     wrapper = textwrap.TextWrapper(break_long_words=False, break_on_hyphens=False)
     wrapped_content = "\n".join("\n".join(wrapper.wrap(line))

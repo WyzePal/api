@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2014 Zulip, Inc.
+# Copyright © 2014 WyzePal, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,12 @@
 
 ### REQUIRED CONFIGURATION ###
 
-# TRELLO_API_KEY
-#
-# Visit https://trello.com/1/appkey/generate to generate
-# an APPLICATION_KEY (needs to be logged into Trello)
-TRELLO_API_KEY = ""
+# Change these values to your Slack credentials.
+SLACK_TOKEN = 'slack_token'
 
-# TRELLO_TOKEN
-#
-# To generate a Trello read access Token, visit (needs to be logged into Trello)
-# https://trello.com/1/authorize?key=<TRELLO_API_KEY>&name=Issue+Manager&expiration=never&response_type=token&scope=read
-#
-# Take care to replace <TRELLO_API_KEY> with the appropriate value
-TRELLO_TOKEN = ""
+# Change these values to the credentials for your Slack bot.
+WYZEPAL_USER = 'user-email@wyzepal.com'
+WYZEPAL_API_KEY = 'user-email_api_key'
 
-# WYZEPAL_WEBHOOK_URL
-#
-# The webhook URL that Trello will query
-WYZEPAL_WEBHOOK_URL = ""
+# Set this to your WyzePal API server URI
+WYZEPAL_SITE = 'https://wyzepal.example.com'

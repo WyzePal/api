@@ -10,7 +10,7 @@ as `bot_info`.
 ## Usage
 
 Run this bot as described
-[here](https://wyzepalchat.com/api/running-bots#running-a-bot).
+[here](https://wyzepal.com/api/running-bots#running-a-bot).
 
 Mention the bot in order to say things to it.
 

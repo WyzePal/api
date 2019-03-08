@@ -220,9 +220,9 @@ def write_sample_config(target_path, wyzepalrc):
             ('room_id', '#wyzepal:matrix.org'),
         ))),
         ('wyzepal', OrderedDict((
-            ('email', 'glitch-bot@chat.wyzepal.org'),
+            ('email', 'glitch-bot@chat.wyzepal.com'),
             ('api_key', 'aPiKeY'),
-            ('site', 'https://chat.wyzepal.org'),
+            ('site', 'https://chat.wyzepal.com'),
             ('stream', 'test here'),
             ('topic', 'matrix'),
         ))),

@@ -71,7 +71,7 @@ class JohnHandler(object):
             """WyzePal is a powerful, open source group chat application. Written in Python
             and using the Django framework, WyzePal supports both private messaging and group
             chats via conversation streams. You can learn more about the product and its
-            features at https://www.wyzepal.org.""",
+            features at https://www.wyzepal.com.""",
         ])
         self.bot.train([
             "I would like to request a remote dev instance",

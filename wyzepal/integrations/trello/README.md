@@ -20,4 +20,4 @@ Usage :
                              --wyzepal-webhook-url <wyzepal_webhook_url>
 
 For more information, please see WyzePal's documentation on how to set up
-a Trello integration [here](https://wyzepalchat.com/integrations/doc/trello).
+a Trello integration [here](https://wyzepal.com/integrations/doc/trello).

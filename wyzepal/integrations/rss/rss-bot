@@ -3,7 +3,7 @@
 #
 # RSS integration for WyzePal
 #
-# Copyright © 2014 Zulip,Inc.
+# Copyright © 2014 WyzePal, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,7 @@ To use this script:
 1. Create an RSS feed file containing 1 feed URL per line (default feed
    file location: ~/.cache/wyzepal-rss/rss-feeds)
 2. Subscribe to the stream that will receive RSS updates (default stream: rss)
-3. create a ~/.wyzepalrc as described on https://wyzepalchat.com/api#api_keys
+3. create a ~/.wyzepalrc as described on https://wyzepal.com/api#api_keys
 4. Test the script by running it manually, like this:
 
 /usr/local/share/wyzepal/integrations/rss/rss-bot

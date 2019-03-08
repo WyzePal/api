@@ -11,7 +11,7 @@ these bots.
 ## Reviving a bot
 
 To revive an unmaintained bot, go through our [Writing bots](
-https://chat.wyzepal.org/api/writing-bots) guide and check if
+https://chat.wyzepal.com/api/writing-bots) guide and check if
 the bot meets the outlined criteria.
 In particular, this means that the bot should:
 * contain automated tests.

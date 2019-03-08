@@ -8,7 +8,7 @@ like so:
 @xkcd <command>
 ```
 
-Run this bot as described in [here](https://wyzepalchat.com/api/running-bots#running-a-bot).
+Run this bot as described in [here](https://wyzepal.com/api/running-bots#running-a-bot).
 
 ## Usage
 

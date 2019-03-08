@@ -18,4 +18,4 @@ The following command will upload the file `/tmp/image.png` to the WyzePal serve
 
 Here's an example response:
 
-> [image.png](https://server.wyzepalchat.com/user_uploads/3787/RgoZReSsfMjlQSzvVxjIgAQy/image.png)
+> [image.png](https://server.wyzepal.com/user_uploads/3787/RgoZReSsfMjlQSzvVxjIgAQy/image.png)

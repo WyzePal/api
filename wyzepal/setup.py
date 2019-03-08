@@ -31,8 +31,8 @@ package_info = dict(
     name='wyzepal',
     version=version(),
     description='Bindings for the WyzePal message API',
-    author='Zulip Open Source Project',
-    author_email='zulip-devel@googlegroups.com',
+    author='WyzePal Open Source Project',
+    author_email='wyzepal-devel@googlegroups.com',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
@@ -40,7 +40,7 @@ package_info = dict(
         'License :: OSI Approved :: MIT License',
         'Topic :: Communications :: Chat',
     ],
-    url='https://www.zulip.org/',
+    url='https://www.wyzepal.com/',
     data_files=list(recur_expand('share/wyzepal', 'integrations')),
     include_package_data=True,
     entry_points={

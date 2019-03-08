@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (C) 2012 Zulip,Inc.
+# Copyright (C) 2012 WyzePal, Inc.
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation files
@@ -85,7 +85,7 @@ while backoff.keep_going():
 error_message = """
 ERROR: The Zephyr mirroring bot is unable to continue mirroring Zephyrs.
 This is often caused by failing to maintain unexpired Kerberos tickets
-or AFS tokens.  See https://wyzepalchat.com/zephyr for documentation on how to
+or AFS tokens.  See https://wyzepal.com/zephyr for documentation on how to
 maintain unexpired Kerberos tickets and AFS tokens.
 """
 print(error_message)

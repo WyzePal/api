@@ -3,9 +3,9 @@
 This directory contains the source code for the `wyzepal_bots` PyPI package.
 
 The WyzePal documentation has guides on [using WyzePal's bot system](
-https://chat.wyzepal.org/api/running-bots)
+https://chat.wyzepal.com/api/running-bots)
 and [writing your own bots](
-https://chat.wyzepal.org/api/writing-bots).
+https://chat.wyzepal.com/api/writing-bots).
 
 ## Directory structure
 

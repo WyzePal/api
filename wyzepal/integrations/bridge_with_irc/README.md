@@ -20,6 +20,6 @@ Note that "_wyzepal" will be automatically appended to the IRC nick provided
 ```
 ./irc-mirror.py --irc-server=irc.freenode.net --channel='#python-mypy' --nick-prefix=irc_mirror \
 --stream='test here' --topic='#mypy' \
---site="https://chat.wyzepal.org" --user=<bot-email> \
+--site="https://chat.wyzepal.com" --user=<bot-email> \
 --api-key=<bot-api-key>
 ```
